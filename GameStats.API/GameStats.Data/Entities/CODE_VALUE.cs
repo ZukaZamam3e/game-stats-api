@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace GameStats.Data.Entities;
 
-namespace GameStats.Data.Entities
+public class CODE_VALUE
 {
-    class CODE_VALUE
-    {
-    }
+    public int CODE_TABLE_ID { get; set; }
+
+    public int CODE_VALUE_ID { get; set; }
+
+    public string? DECODE_TXT { get; set; }
+
+    public string? EXTRA_INFO { get; set; }
 }

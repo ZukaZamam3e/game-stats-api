@@ -9,4 +9,9 @@ public class MATCH_TEAM
     public int TEAM_COLOR { get; set; }
 
     public int TOTAL_SCORE { get; set; }
+
+    public required MATCH MATCH { get; set; }
+
+    public required ICollection<MATCH_PLAYER> MATCH_PLAYERS { get; set; }
+
 }

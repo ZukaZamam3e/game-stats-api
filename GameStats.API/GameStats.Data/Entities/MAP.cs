@@ -3,8 +3,9 @@
 public class MAP
 {
     public int MAP_ID { get; set; }
-
-    public string MAP_NAME { get; set; } = null!;
-
+    public required string MAP_NAME { get; set; }
     public int GAME_ID { get; set; }
+
+    public required GAME GAME { get; set; }
+    public required ICollection<MATCH> MATCHES { get; set; }
 }
