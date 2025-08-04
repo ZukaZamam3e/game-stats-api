@@ -7,5 +7,5 @@ public class MAP
     public int GAME_ID { get; set; }
 
     public required GAME GAME { get; set; }
-    public required ICollection<MATCH> MATCHES { get; set; }
+    public virtual ICollection<MATCH>? MATCHES { get; set; }
 }

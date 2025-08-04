@@ -1,4 +1,4 @@
-﻿namespace GameStats.Data
+﻿namespace GameStats.Infrastructure
 {
     public class Class1
     {

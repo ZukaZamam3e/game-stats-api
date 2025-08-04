@@ -1,3 +1,5 @@
+using FluentValidation;
+using GameStats.API.Abstract;
 using GameStats.API.SetUp;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,7 +11,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddGameStatsDI(builder.Configuration);
+builder.Services.RegisterEndpointsFromAssemblyContaining<IApiMarker>();
+
+builder.Services.AddGameStatsDb(builder.Configuration);
+
+builder.Services.AddValidatorsFromAssemblyContaining<IApiMarker>();
 
 var app = builder.Build();
 
@@ -24,6 +30,6 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
-app.MapControllers();
+app.MapEndpoints();
 
 app.Run();

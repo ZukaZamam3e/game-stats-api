@@ -8,6 +8,6 @@ public class MATCH_PLAYER
     public int TEAM_COLOR { get; set; }
     public int SCORE { get; set; }
 
-    public required MATCH_TEAM MATCH_TEAM { get; set; }
-    public required PLAYER PLAYER { get; set; }
+    public virtual MATCH_TEAM? MATCH_TEAM { get; set; }
+    public virtual PLAYER? PLAYER { get; set; }
 }

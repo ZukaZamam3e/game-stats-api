@@ -10,6 +10,6 @@ public class PLAYER
 
     public string EMBLEM { get; set; } = null!;
 
-    public required GAME GAME { get; set; }
-    public required ICollection<MATCH_PLAYER> MATCH_PLAYERS { get; set; }
+    public virtual GAME? GAME { get; set; }
+    public virtual ICollection<MATCH_PLAYER>? MATCH_PLAYERS { get; set; }
 }

@@ -16,8 +16,8 @@ public class MATCH
 
     public DateTime? CREATED_DATE { get; set; }
 
-    public required GAME GAME { get; set; }
-    public required MAP MAP { get; set; }
-    public required MATCH_TYPE MATCH_TYPE { get; set; }
-    public required ICollection<MATCH_TEAM> MATCH_TEAM { get; set; }
+    public virtual GAME? GAME { get; set; }
+    public virtual MAP? MAP { get; set; }
+    public virtual MATCH_TYPE? MATCH_TYPE { get; set; }
+    public virtual ICollection<MATCH_TEAM>? MATCH_TEAM { get; set; }
 }

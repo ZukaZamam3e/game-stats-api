@@ -10,8 +10,8 @@ public class MATCH_TEAM
 
     public int TOTAL_SCORE { get; set; }
 
-    public required MATCH MATCH { get; set; }
+    public virtual MATCH? MATCH { get; set; }
 
-    public required ICollection<MATCH_PLAYER> MATCH_PLAYERS { get; set; }
+    public virtual ICollection<MATCH_PLAYER>? MATCH_PLAYERS { get; set; }
 
 }
