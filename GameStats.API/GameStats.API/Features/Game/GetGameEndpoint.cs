@@ -1,8 +1,9 @@
 ﻿using GameStats.API.Abstract;
+using GameStats.API.Features.Game.Shared;
 using GameStats.Store.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
-namespace GameStats.API.Features.Game.Get;
+namespace GameStats.API.Features.Game;
 
 public class GetGameEndpoint : IEndpoint
 {
@@ -23,6 +24,6 @@ public class GetGameEndpoint : IEndpoint
             return Results.NotFound();
         }
 
-        return Results.Ok(game);
+        return Results.Ok(game.MapToResponse());
     }
 }

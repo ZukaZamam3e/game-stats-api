@@ -44,11 +44,40 @@ public class GameStore(GameStatsDbContext _context) : IGameStore
 
     public async Task<GameModel?> UpdateGame(GameModel game)
     {
-        throw new NotImplementedException();
+        GAME? entity = await _context.GAME
+            .Where(g => g.GAME_ID == game.GameId)
+            .FirstOrDefaultAsync();
+
+        GameModel? model = null;
+
+        if(entity != null)
+        {
+            entity.GAME_NAME = game.GameName;
+            _context.GAME.Update(entity);
+            await _context.SaveChangesAsync();
+            model = new GameModel
+            {
+                GameId = entity.GAME_ID,
+                GameName = entity.GAME_NAME
+            };
+        }
+
+        return model;
     }
 
-    public Task DeleteGame(int gameId)
+    public Task<bool> DeleteGame(int gameId)
     {
-        throw new NotImplementedException();
+        bool success = false;
+        GAME? entity = _context.GAME
+            .Where(g => g.GAME_ID == gameId)
+            .FirstOrDefault();
+
+        if (entity != null)
+        {
+            _context.GAME.Remove(entity);
+            success = _context.SaveChanges() > 0;
+        }
+
+        return Task.FromResult(success);
     }
 }

@@ -10,5 +10,5 @@ public interface IGameStore
 
     Task<GameModel?> UpdateGame(GameModel game);   
 
-    Task DeleteGame(int gameId);
+    Task<bool> DeleteGame(int gameId);
 }
