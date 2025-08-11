@@ -1,21 +1,15 @@
 using FluentValidation;
+using GameStats.API;
 using GameStats.API.Abstract;
 using GameStats.API.SetUp;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Host.UseSerilog((context, configuration) =>
+    configuration.ReadFrom.Configuration(context.Configuration));
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-builder.Services.RegisterEndpointsFromAssemblyContaining<IApiMarker>();
-
-builder.Services.AddGameStatsDb(builder.Configuration);
-
-builder.Services.AddValidatorsFromAssemblyContaining<IApiMarker>();
+builder.Services.AddPresentation(builder.Configuration);
 
 var app = builder.Build();
 
@@ -26,6 +20,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseExceptionHandler();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
