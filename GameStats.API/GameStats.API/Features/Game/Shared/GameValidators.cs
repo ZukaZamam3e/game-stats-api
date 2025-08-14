@@ -1,8 +1,9 @@
-﻿using FluentValidation;
+﻿using FastEndpoints;
+using FluentValidation;
 
 namespace GameStats.API.Features.Game.Shared
 {
-    public class CreateGameValidator : AbstractValidator<CreateGameRequest>
+    public class CreateGameValidator : Validator<CreateGameRequest>
     {
         public CreateGameValidator()
         {
@@ -14,7 +15,7 @@ namespace GameStats.API.Features.Game.Shared
         }
     }
 
-    public class UpdateGameValidator : AbstractValidator<UpdateGameRequest>
+    public class UpdateGameValidator : Validator<UpdateGameRequest>
     {
         public UpdateGameValidator()
         {
@@ -30,7 +31,7 @@ namespace GameStats.API.Features.Game.Shared
         }
     }
 
-    public class DeleteGameValidator : AbstractValidator<DeleteGameRequest>
+    public class DeleteGameValidator : Validator<DeleteGameRequest>
     {
         public DeleteGameValidator()
         {

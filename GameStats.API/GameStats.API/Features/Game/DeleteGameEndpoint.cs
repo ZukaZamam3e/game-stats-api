@@ -1,31 +1,29 @@
-﻿using GameStats.API.Abstract;
-using GameStats.API.Common;
+﻿using FastEndpoints;
 using GameStats.API.Features.Shared.Responses;
 using GameStats.Store.Interfaces;
-using Microsoft.AspNetCore.Mvc;
 
 namespace GameStats.API.Features.Game;
 
-public sealed record DeleteGameRequest(
-    int GameId
-    );
-
-public class DeleteGameEndpoint : IEndpoint
+public sealed record DeleteGameRequest
 {
-    public void MapEndpoint(WebApplication app)
+    public int GameId { get; set; }
+};
+
+public class DeleteGameEndpoint(IGameStore gameStore) : Endpoint<DeleteGameRequest, DeleteResponse>
+{
+    public override void Configure()
     {
-        app.MapPost("/api/game/delete", Handle)
-            .AddEndpointFilter<ValidationFilter<DeleteGameRequest>>();
+        Post("/api/game/delete");
+        AllowAnonymous();
     }
 
-    private static async Task<IResult> Handle(
-        [FromBody] DeleteGameRequest request,
-        [FromServices] IGameStore gameStore,
+    public override async Task HandleAsync(
+        DeleteGameRequest request,
         CancellationToken cancellationToken
         )
     {
         var success = await gameStore.DeleteGame(request.GameId);
 
-        return Results.Ok(new DeleteResponse(success));
+        await Send.OkAsync(new DeleteResponse(success), cancellationToken);
     }
 }

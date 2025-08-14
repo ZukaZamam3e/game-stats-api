@@ -1,29 +1,38 @@
-﻿using GameStats.API.Abstract;
+﻿using FastEndpoints;
 using GameStats.API.Features.Game.Shared;
+using GameStats.API.Features.Game.Shared.Responses;
 using GameStats.Store.Interfaces;
-using Microsoft.AspNetCore.Mvc;
 
 namespace GameStats.API.Features.Game;
 
-public class GetGameEndpoint : IEndpoint
+public sealed record GetGameRequest 
 {
-    public void MapEndpoint(WebApplication app)
+    [QueryParam]
+    public int GameId { get; set; }
+};
+
+public class GetGameEndpoint(IGameStore gameStore) : Endpoint<GetGameRequest, GameResponse>
+{
+    public override void Configure()
     {
-        app.MapGet("/api/game/{gameId}", Handle);
+        Get("/api/game");
+        AllowAnonymous();
     }
 
-    private static async Task<IResult> Handle(
-        [FromRoute] int gameId,
-        [FromServices] IGameStore gameStore
+    public override async Task HandleAsync(
+        GetGameRequest request,
+        CancellationToken cancellationToken
         )
     {
-        var game = await gameStore.GetGame(gameId);
+        var game = await gameStore.GetGame(request.GameId);
 
-        if(game == null)
+        if (game == null)
         {
-            return Results.NotFound();
+            await Send.NotFoundAsync(cancellationToken);
         }
-
-        return Results.Ok(game.MapToResponse());
+        else
+        {
+            await Send.OkAsync(game.MapToResponse(), cancellationToken);
+        }
     }
 }

@@ -1,26 +1,26 @@
-﻿using GameStats.API.Abstract;
-using GameStats.API.Common;
+﻿using FastEndpoints;
+using GameStats.API.Features.Game.Shared;
+using GameStats.API.Features.Game.Shared.Responses;
 using GameStats.Model;
 using GameStats.Store.Interfaces;
-using Microsoft.AspNetCore.Mvc;
 namespace GameStats.API.Features.Game;
 
-public sealed record UpdateGameRequest(
-    int GameId,
-    string GameName
-    );
-
-public class UpdateGameEndpoint : IEndpoint
+public sealed record UpdateGameRequest
 {
-    public void MapEndpoint(WebApplication app)
+    public int GameId {get;set;}
+    public required string GameName { get; set; }
+};
+
+public class UpdateGameEndpoint(IGameStore gameStore) : Endpoint<UpdateGameRequest, GameResponse>
+{
+    public override void Configure()
     {
-        app.MapPost("/api/game/update", Handle)
-            .AddEndpointFilter<ValidationFilter<UpdateGameRequest>>();
+        Post("/api/game/update");
+        AllowAnonymous();
     }
 
-    private static async Task<IResult> Handle(
-        [FromBody] UpdateGameRequest request,
-        [FromServices] IGameStore gameStore,
+    public override async Task HandleAsync(
+        UpdateGameRequest request,
         CancellationToken cancellationToken
         )
     {
@@ -28,9 +28,11 @@ public class UpdateGameEndpoint : IEndpoint
 
         if (game == null)
         {
-            return Results.NotFound();
+            await Send.NotFoundAsync(cancellationToken);
         }
-
-        return Results.Ok(game);
+        else
+        {
+            await Send.OkAsync(game.MapToResponse(), cancellationToken);
+        }
     }
 }

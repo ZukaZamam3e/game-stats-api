@@ -1,27 +1,26 @@
-﻿using FluentValidation;
-using GameStats.API.Abstract;
-using GameStats.API.Common;
+﻿using FastEndpoints;
+using GameStats.API.Features.Game.Shared;
+using GameStats.API.Features.Game.Shared.Responses;
 using GameStats.Model;
 using GameStats.Store.Interfaces;
-using Microsoft.AspNetCore.Mvc;
 
 namespace GameStats.API.Features.Game;
 
-public sealed record CreateGameRequest(
-    string GameName
-    );
-
-public class CreateGameEndpoint : IEndpoint
+public sealed record CreateGameRequest
 {
-    public void MapEndpoint(WebApplication app)
+    public required string GameName { get; set; }
+};
+
+public class CreateGameEndpoint(IGameStore gameStore) : Endpoint<CreateGameRequest, GameResponse>
+{
+    public override void Configure()
     {
-        app.MapPost("/api/game/create", Handle)
-            .AddEndpointFilter<ValidationFilter<CreateGameRequest>>();
+        Post("/api/game/create");
+        AllowAnonymous();
     }
 
-    private static async Task<IResult> Handle(
-        [FromBody] CreateGameRequest request,
-        [FromServices] IGameStore gameStore,
+    public override async Task HandleAsync(
+        CreateGameRequest request,
         CancellationToken cancellationToken
         )
     {
@@ -29,9 +28,11 @@ public class CreateGameEndpoint : IEndpoint
 
         if (game == null)
         {
-            return Results.NotFound();
+            await Send.ErrorsAsync(400, cancellationToken);
         }
-
-        return Results.Ok(game);
+        else
+        {
+            await Send.OkAsync(game.MapToResponse(), cancellationToken);
+        }
     }
 }

@@ -1,5 +1,5 @@
-﻿using FluentValidation;
-using GameStats.API.Abstract;
+﻿using FastEndpoints;
+using FastEndpoints.Swagger;
 using GameStats.API.Common;
 using GameStats.API.SetUp;
 
@@ -12,11 +12,10 @@ public static class DependencyInjection
         services.AddExceptionHandler<GlobalExceptionHandler>();
         services.AddControllers();
         services.AddEndpointsApiExplorer();
-        services.AddSwaggerGen();
         services.AddProblemDetails();
-        services.RegisterEndpointsFromAssemblyContaining<IApiMarker>();
         services.AddGameStatsDb(configuration);
-        services.AddValidatorsFromAssemblyContaining<IApiMarker>();
+        services.AddFastEndpoints()
+            .SwaggerDocument();
 
         return services;
     }
