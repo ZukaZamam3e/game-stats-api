@@ -15,7 +15,7 @@ public class GetGameEndpoint(IGameStore gameStore) : Endpoint<GetGameRequest, Ga
 {
     public override void Configure()
     {
-        Get("/api/game");
+        Get("/api/game/get");
         AllowAnonymous();
     }
 
