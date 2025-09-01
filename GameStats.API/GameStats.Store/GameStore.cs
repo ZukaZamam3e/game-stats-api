@@ -8,6 +8,34 @@ namespace GameStats.Store;
 
 public class GameStore(GameStatsDbContext _context) : IGameStore
 {
+    public async Task<IEnumerable<GameModel>> GetGames(PagedQuery<GameModel> pagedQuery)
+    {
+        IQueryable<GAME> query = _context.GAME.AsQueryable();
+
+        if (pagedQuery.Filter != null)
+        {
+            if (!string.IsNullOrWhiteSpace(pagedQuery.Filter.GameName))
+            {
+                query = query.Where(g => g.GAME_NAME.Contains(pagedQuery.Filter.GameName));
+            }
+
+            if (pagedQuery.Filter.GameId > 0)
+            {
+                query = query.Where(g => g.GAME_ID == pagedQuery.Filter.GameId);
+            }
+        }
+
+        query = query.OrderBy(m => m.GAME_ID).ApplyPaging(pagedQuery);
+
+        List<GameModel> games = await query.Select(g => new GameModel
+        {
+            GameId = g.GAME_ID,
+            GameName = g.GAME_NAME
+        }).ToListAsync();
+
+        return games;
+    }
+
     public async Task<GameModel?> GetGame(int gameId)
     {
         GameModel? game = await _context.GAME

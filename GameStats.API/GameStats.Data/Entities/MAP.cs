@@ -6,6 +6,6 @@ public class MAP
     public required string MAP_NAME { get; set; }
     public int GAME_ID { get; set; }
 
-    public required GAME GAME { get; set; }
+    public virtual GAME? GAME { get; set; }
     public virtual ICollection<MATCH>? MATCHES { get; set; }
 }
