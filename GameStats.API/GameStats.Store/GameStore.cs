@@ -16,7 +16,7 @@ public class GameStore(GameStatsDbContext _context) : IGameStore
         {
             if (!string.IsNullOrWhiteSpace(pagedQuery.Filter.GameName))
             {
-                query = query.Where(g => g.GAME_NAME.Contains(pagedQuery.Filter.GameName));
+                query = query.Where(g => g.GAME_NAME.ToLower().Contains(pagedQuery.Filter.GameName.ToLower()));
             }
 
             if (pagedQuery.Filter.GameId > 0)
@@ -93,19 +93,19 @@ public class GameStore(GameStatsDbContext _context) : IGameStore
         return model;
     }
 
-    public Task<bool> DeleteGame(int gameId)
+    public async Task<bool> DeleteGame(int gameId)
     {
-        bool success = false;
-        GAME? entity = _context.GAME
+        GAME? entity = await _context.GAME
             .Where(g => g.GAME_ID == gameId)
-            .FirstOrDefault();
+            .FirstOrDefaultAsync();
 
         if (entity != null)
         {
             _context.GAME.Remove(entity);
-            success = _context.SaveChanges() > 0;
+            await _context.SaveChangesAsync();
+            return true;
         }
 
-        return Task.FromResult(success);
+        return false;
     }
 }
