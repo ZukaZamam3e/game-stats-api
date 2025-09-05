@@ -3,6 +3,7 @@ using GameStats.Data.Entities;
 using GameStats.Model;
 using GameStats.Store.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Numerics;
 
 namespace GameStats.Store;
 
@@ -16,7 +17,7 @@ public class MapStore(GameStatsDbContext _context) : IMapStore
         {
             if (!string.IsNullOrWhiteSpace(pagedQuery.Filter.MapName))
             {
-                query = query.Where(g => g.MAP_NAME.Contains(pagedQuery.Filter.MapName));
+                query = query.Where(g => g.MAP_NAME.ToLower().Contains(pagedQuery.Filter.MapName.ToLower()));
             }
 
             if (pagedQuery.Filter.MapId > 0)
@@ -58,6 +59,12 @@ public class MapStore(GameStatsDbContext _context) : IMapStore
 
     public async Task<MapModel?> CreateMap(MapModel map)
     {
+        var gameExists = await _context.GAME.AnyAsync(g => g.GAME_ID == map.GameId);
+        if (!gameExists)
+        {
+            throw new InvalidOperationException($"Game with ID {map.GameId} does not exist.");
+        }
+
         MAP entity = new()
         {
             MAP_NAME = map.MapName,
@@ -77,6 +84,12 @@ public class MapStore(GameStatsDbContext _context) : IMapStore
 
     public async Task<MapModel?> UpdateMap(MapModel map)
     {
+        var gameExists = await _context.GAME.AnyAsync(g => g.GAME_ID == map.GameId);
+        if (!gameExists)
+        {
+            throw new InvalidOperationException($"Game with ID {map.GameId} does not exist.");
+        }
+
         MAP? entity = await _context.MAP
             .Where(m => m.MAP_ID == map.MapId)
             .FirstOrDefaultAsync();
@@ -99,19 +112,17 @@ public class MapStore(GameStatsDbContext _context) : IMapStore
         return null;
     }
 
-    public Task<bool> DeleteMap(int mapId)
+    public async Task<bool> DeleteMap(int mapId)
     {
-        bool success = false;
-        MAP? entity = _context.MAP
-            .Where(m => m.MAP_ID == mapId)
-            .FirstOrDefault();
+        MAP? entity = await _context.MAP.FirstOrDefaultAsync(m => m.MAP_ID == mapId);
 
         if (entity != null)
         {
             _context.MAP.Remove(entity);
-            success = _context.SaveChanges() > 0;
+            await _context.SaveChangesAsync();
+            return true;
         }
 
-        return Task.FromResult(success);
+        return false;
     }
 }

@@ -17,6 +17,7 @@ public static class DependencyInjection
 
         services.AddTransient<IGameStore, GameStore>();
         services.AddTransient<IMapStore, MapStore>();
+        services.AddTransient<IPlayerStore, PlayerStore>();
 
         return services;
     }

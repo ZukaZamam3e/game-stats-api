@@ -86,7 +86,11 @@ public class GameStatsDbContext : DbContext
         {
             entity.HasKey(e => e.MATCH_ID);
             entity.Property(e => e.MATCH_ID).ValueGeneratedOnAdd();
-            entity.Property(e => e.MATCH_NAME).IsRequired();
+            entity.Property(e => e.OLD_MATCH_ID).IsRequired();
+            entity.Property(e => e.MATCH_NAME).IsRequired()
+                .IsRequired()
+                .HasMaxLength(100);
+
             entity.Property(e => e.GAME_ID).IsRequired();
             entity.Property(e => e.TYPE_CD).IsRequired();
             entity.Property(e => e.MAP_ID).IsRequired();
@@ -99,7 +103,7 @@ public class GameStatsDbContext : DbContext
             entity.HasOne(m => m.MAP)
                 .WithMany(g => g.MATCHES)
                 .HasForeignKey(e => e.MAP_ID)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
         });
 
         modelBuilder.Entity<MATCH_TEAM>(entity =>
