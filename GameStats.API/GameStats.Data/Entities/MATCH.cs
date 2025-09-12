@@ -22,4 +22,5 @@ public class MATCH
     public virtual MAP? MAP { get; set; }
     public virtual MATCH_TYPE? MATCH_TYPE { get; set; }
     public virtual ICollection<MATCH_TEAM>? MATCH_TEAM { get; set; }
+    public virtual ICollection<MATCH_PLAYER>? MATCH_PLAYER { get; set; }
 }
