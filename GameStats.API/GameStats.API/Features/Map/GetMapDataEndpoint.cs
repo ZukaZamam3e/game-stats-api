@@ -1,9 +1,6 @@
 using FastEndpoints;
-using GameStats.API.Features.Game;
 using GameStats.API.Features.Map.Shared;
-using GameStats.API.Features.Map.Shared.Responses;
 using GameStats.Model;
-using GameStats.Store;
 using GameStats.Store.Interfaces;
 
 namespace GameStats.API.Features.Map;
