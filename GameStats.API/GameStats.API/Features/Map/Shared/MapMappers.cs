@@ -1,4 +1,3 @@
-using GameStats.API.Features.Game;
 using GameStats.API.Features.Map.Shared.Responses;
 using GameStats.Model;
 
