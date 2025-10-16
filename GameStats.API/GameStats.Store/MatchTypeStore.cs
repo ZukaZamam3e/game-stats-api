@@ -1,12 +1,13 @@
 ﻿using GameStats.Data.Context;
 using GameStats.Data.Entities;
 using GameStats.Model;
+using GameStats.Store.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.IO;
 
 namespace GameStats.Store;
 
-public class MatchTypeStore(GameStatsDbContext _context)
+public class MatchTypeStore(GameStatsDbContext _context) : IMatchTypeStore
 {
     public async Task<IEnumerable<MatchTypeModel>> GetMatchTypes(PagedQuery<MatchTypeModel> pagedQuery)
     {

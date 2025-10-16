@@ -15,7 +15,7 @@ public class GetMatchTypeEndpoint(IMatchTypeStore matchTypeStore) : Endpoint<Get
 {
     public override void Configure()
     {
-        Get("/api/map/get");
+        Get("/api/matchtype/get");
         AllowAnonymous();
     }
 
