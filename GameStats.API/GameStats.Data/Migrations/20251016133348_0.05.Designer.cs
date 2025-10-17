@@ -4,6 +4,7 @@ using GameStats.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GameStats.Data.Migrations
 {
     [DbContext(typeof(GameStatsDbContext))]
-    partial class GameStatsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251016133348_0.05")]
+    partial class _005
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,7 +44,7 @@ namespace GameStats.Data.Migrations
 
                     b.HasKey("CODE_TABLE_ID");
 
-                    b.ToTable("CODE_VALUE", (string)null);
+                    b.ToTable("CODE_VALUE");
                 });
 
             modelBuilder.Entity("GameStats.Data.Entities.GAME", b =>
@@ -59,7 +62,7 @@ namespace GameStats.Data.Migrations
 
                     b.HasKey("GAME_ID");
 
-                    b.ToTable("GAME", (string)null);
+                    b.ToTable("GAME");
                 });
 
             modelBuilder.Entity("GameStats.Data.Entities.MAP", b =>
@@ -82,7 +85,7 @@ namespace GameStats.Data.Migrations
 
                     b.HasIndex("GAME_ID");
 
-                    b.ToTable("MAP", (string)null);
+                    b.ToTable("MAP");
                 });
 
             modelBuilder.Entity("GameStats.Data.Entities.MATCH", b =>
@@ -127,7 +130,7 @@ namespace GameStats.Data.Migrations
 
                     b.HasIndex("MATCH_TYPE_ID");
 
-                    b.ToTable("MATCH", (string)null);
+                    b.ToTable("MATCH");
                 });
 
             modelBuilder.Entity("GameStats.Data.Entities.MATCH_PLAYER", b =>
@@ -158,7 +161,7 @@ namespace GameStats.Data.Migrations
 
                     b.HasIndex("PLAYER_ID");
 
-                    b.ToTable("MATCH_PLAYER", (string)null);
+                    b.ToTable("MATCH_PLAYER");
                 });
 
             modelBuilder.Entity("GameStats.Data.Entities.MATCH_TEAM", b =>
@@ -179,7 +182,7 @@ namespace GameStats.Data.Migrations
 
                     b.HasIndex("MATCH_ID");
 
-                    b.ToTable("MATCH_TEAM", (string)null);
+                    b.ToTable("MATCH_TEAM");
                 });
 
             modelBuilder.Entity("GameStats.Data.Entities.MATCH_TYPE", b =>
@@ -202,7 +205,7 @@ namespace GameStats.Data.Migrations
 
                     b.HasIndex("GAME_ID");
 
-                    b.ToTable("MATCH_TYPE", (string)null);
+                    b.ToTable("MATCH_TYPE");
                 });
 
             modelBuilder.Entity("GameStats.Data.Entities.PLAYER", b =>
@@ -229,7 +232,7 @@ namespace GameStats.Data.Migrations
 
                     b.HasIndex("GAME_ID");
 
-                    b.ToTable("PLAYER", (string)null);
+                    b.ToTable("PLAYER");
                 });
 
             modelBuilder.Entity("GameStats.Data.Entities.MAP", b =>

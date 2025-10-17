@@ -8,7 +8,7 @@ public class MATCH
 
     public int GAME_ID { get; set; }
 
-    public int MATCH_NAME { get; set; }
+    public required string MATCH_NAME { get; set; }
 
     public int TYPE_CD { get; set; }
 

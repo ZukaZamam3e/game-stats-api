@@ -33,14 +33,14 @@ public class MapStore(GameStatsDbContext _context) : IMapStore
 
         query = query.OrderBy(m => m.MAP_ID).ApplyPaging(pagedQuery);
 
-        List<MapModel> games = await query.Select(g => new MapModel
+        List<MapModel> maps = await query.Select(g => new MapModel
         {
             MapId = g.MAP_ID,
             GameId = g.GAME_ID,
             MapName = g.MAP_NAME
         }).ToListAsync();
 
-        return games;
+        return maps;
     }
 
     public async Task<MapModel?> GetMap(int mapId)
