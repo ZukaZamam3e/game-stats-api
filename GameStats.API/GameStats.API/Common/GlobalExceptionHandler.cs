@@ -16,7 +16,7 @@ public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IE
         {
             Status = StatusCodes.Status500InternalServerError,
             Title = "Internal Server Error",
-            Detail = exception.Message,
+            Detail = exception.Message + (exception.InnerException != null ? " Inner Exception: " + exception.InnerException.Message : ""),
         };
 
         context.Response.StatusCode = errorResponse.Status.Value;
