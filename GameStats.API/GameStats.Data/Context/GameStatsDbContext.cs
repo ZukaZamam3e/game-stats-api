@@ -111,7 +111,9 @@ public class GameStatsDbContext : DbContext
             entity.HasKey(e => e.MATCH_TEAM_ID);
             entity.Property(e => e.MATCH_TEAM_ID).ValueGeneratedOnAdd();
             entity.Property(e => e.MATCH_ID).IsRequired();
-            entity.Property(e => e.TEAM_COLOR).IsRequired();
+            entity.Property(e => e.TEAM_COLOR)
+                .IsRequired()
+                .HasMaxLength(100);
 
             entity.HasOne(m => m.MATCH)
                 .WithMany(m => m.MATCH_TEAM)
