@@ -6,7 +6,7 @@ public class MATCH_TEAM
 
     public int MATCH_ID { get; set; }
 
-    public int TEAM_COLOR { get; set; }
+    public required string TEAM_COLOR { get; set; }
 
     public virtual MATCH? MATCH { get; set; }
 
