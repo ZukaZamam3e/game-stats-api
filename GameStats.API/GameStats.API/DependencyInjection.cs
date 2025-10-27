@@ -20,6 +20,7 @@ public static class DependencyInjection
         services.AddTransient<IPlayerStore, PlayerStore>();
         services.AddTransient<IMatchTypeStore, MatchTypeStore>();
         services.AddTransient<IMatchStore, MatchStore>();
+        services.AddTransient<IMatchPlayerStore, MatchPlayerStore>();
 
         return services;
     }
