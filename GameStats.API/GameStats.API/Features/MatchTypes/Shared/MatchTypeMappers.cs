@@ -1,5 +1,4 @@
-﻿using GameStats.API.Features.Map;
-using GameStats.API.Features.MatchTypes.Shared.Responses;
+﻿using GameStats.API.Features.MatchTypes.Shared.Responses;
 using GameStats.Model;
 
 namespace GameStats.API.Features.MatchTypes.Shared;
@@ -7,6 +6,8 @@ namespace GameStats.API.Features.MatchTypes.Shared;
 public static class MatchTypeMappers
 {
     public static MatchTypeResponse MapToResponse(this MatchTypeModel map) => new(map.MatchTypeId, map.MatchTypeName, map.GameId);
+
+    public static IEnumerable<MatchTypeResponse> MapToResponse(this IEnumerable<MatchTypeModel> matchType) => matchType.Select(matchType => matchType.MapToResponse());
 
     public static PagedQuery<MatchTypeModel> MapToPagedQuery(this GetMatchTypeDataRequest request)
     {

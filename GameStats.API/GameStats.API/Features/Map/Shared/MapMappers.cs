@@ -7,6 +7,8 @@ public static class MapMappers
 {
     public static MapResponse MapToResponse(this MapModel map) => new(map.MapId, map.MapName, map.GameId);
 
+    public static IEnumerable<MapResponse> MapToResponse(this IEnumerable<MapModel> maps) => maps.Select(map => map.MapToResponse());
+
     public static PagedQuery<MapModel> MapToPagedQuery(this GetMapDataRequest request)
     {
         var filter = new MapModel

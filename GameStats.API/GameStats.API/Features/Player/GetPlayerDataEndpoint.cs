@@ -3,6 +3,7 @@ using GameStats.API.Features.Game.Shared;
 using GameStats.Model;
 using GameStats.Store.Interfaces;
 using GameStats.API.Features.Player.Shared;
+using GameStats.API.Features.Player.Shared.Responses;
 
 namespace GameStats.API.Features.Player;
 
@@ -24,7 +25,7 @@ public sealed record GetPlayerDataRequest
     public int? Offset { get; set; }
 };
 
-public sealed record GetPlayerDataResponse(IEnumerable<PlayerModel> Players);
+public sealed record GetPlayerDataResponse(IEnumerable<PlayerResponse> Players);
 
 public class GetPlayerDataEndpoint(IPlayerStore playerStore) : Endpoint<GetPlayerDataRequest, GetPlayerDataResponse>
 {
@@ -41,6 +42,6 @@ public class GetPlayerDataEndpoint(IPlayerStore playerStore) : Endpoint<GetPlaye
     {
         IEnumerable<PlayerModel> players = await playerStore.GetPlayers(request.MapToPagedQuery()) ?? [];
 
-        await Send.OkAsync(new GetPlayerDataResponse(players), cancellationToken);
+        await Send.OkAsync(new GetPlayerDataResponse(players.MapToResponse()), cancellationToken);
     }
 }

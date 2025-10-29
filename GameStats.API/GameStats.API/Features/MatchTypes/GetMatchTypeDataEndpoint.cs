@@ -1,6 +1,6 @@
 ﻿using FastEndpoints;
 using GameStats.API.Features.MatchTypes.Shared;
-using GameStats.Model;
+using GameStats.API.Features.MatchTypes.Shared.Responses;
 using GameStats.Store.Interfaces;
 
 namespace GameStats.API.Features.MatchTypes;
@@ -23,7 +23,7 @@ public sealed record GetMatchTypeDataRequest
     public int? Offset { get; set; }
 }
 
-public sealed record GetMatchTypeDataResponse(IEnumerable<MatchTypeModel> MatchTypes);
+public sealed record GetMatchTypeDataResponse(IEnumerable<MatchTypeResponse> MatchTypes);
 
 public class GetMatchTypeDataEndpoint(IMatchTypeStore matchTypeStore) : Endpoint<GetMatchTypeDataRequest>
 {
@@ -36,6 +36,6 @@ public class GetMatchTypeDataEndpoint(IMatchTypeStore matchTypeStore) : Endpoint
     {
         var matchTypes = await matchTypeStore.GetMatchTypes(request.MapToPagedQuery()) ?? [];
 
-        await Send.OkAsync(new GetMatchTypeDataResponse(matchTypes), cancellationToken);
+        await Send.OkAsync(new GetMatchTypeDataResponse(matchTypes.MapToResponse()), cancellationToken);
     }
 }

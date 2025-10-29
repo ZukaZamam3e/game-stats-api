@@ -1,5 +1,4 @@
 ﻿using FastEndpoints;
-using GameStats.API.Features.Match.Shared.Responses;
 using GameStats.API.Features.MatchPlayer.Shared;
 using GameStats.API.Features.MatchPlayer.Shared.Responses;
 using GameStats.Store.Interfaces;
