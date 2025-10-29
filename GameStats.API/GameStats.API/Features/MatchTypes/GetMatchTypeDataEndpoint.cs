@@ -29,7 +29,7 @@ public class GetMatchTypeDataEndpoint(IMatchTypeStore matchTypeStore) : Endpoint
 {
     public override void Configure()
     {
-        Get("/api/matchtype/getmatchtypedata");
+        Get("/api/matchtype/data");
         AllowAnonymous();
     }
     public override async Task HandleAsync(GetMatchTypeDataRequest request, CancellationToken cancellationToken)

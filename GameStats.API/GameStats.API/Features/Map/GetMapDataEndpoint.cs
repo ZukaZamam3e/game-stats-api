@@ -30,7 +30,7 @@ public class GetMapDataEndpoint(IMapStore mapStore) : Endpoint<GetMapDataRequest
 {
     public override void Configure()
     {
-        Get("/api/map/getmapdata");
+        Get("/api/map/data");
         AllowAnonymous();
     }
 

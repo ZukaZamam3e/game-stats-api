@@ -15,7 +15,7 @@ public class GetMatchEndpoint(IMatchStore matchStore): Endpoint<GetMatchRequest,
 {
     public override void Configure()
     {
-        Get("/api/match");
+        Get("/api/match/get");
         AllowAnonymous();
     }
     public override async Task HandleAsync(

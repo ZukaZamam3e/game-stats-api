@@ -15,7 +15,7 @@ public class GetMatchTeamEndpoint(IMatchTeamStore matchTeamStore) : Endpoint<Get
 {
     public override void Configure()
     {
-        Get("api/matchteam");
+        Get("api/matchteam/get");
         AllowAnonymous();
     }
 

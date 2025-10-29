@@ -31,7 +31,7 @@ public class GetPlayerDataEndpoint(IPlayerStore playerStore) : Endpoint<GetPlaye
 {
     public override void Configure()
     {
-        Get("/api/player/getplayerdata");
+        Get("/api/player/data");
         AllowAnonymous();
     }
 
