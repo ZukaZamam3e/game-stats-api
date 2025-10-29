@@ -7,14 +7,14 @@ namespace GameStats.API.Features.Match;
 
 public sealed record DeleteMatchRequest
 {
-    public int MatchTeamId { get; set; }
+    public int MatchId { get; set; }
 };
 
 public class DeleteMatchEndpoint(IMatchStore matchStore) : Endpoint<DeleteMatchRequest, DeleteResponse>
 {
     public override void Configure()
     {
-        Post("/api/matchteam/delete");
+        Post("/api/match/delete");
         AllowAnonymous();
     }
 
@@ -23,7 +23,7 @@ public class DeleteMatchEndpoint(IMatchStore matchStore) : Endpoint<DeleteMatchR
         CancellationToken cancellationToken
         )
     {
-        var success = await matchStore.DeleteMatch(request.MatchTeamId);
+        var success = await matchStore.DeleteMatch(request.MatchId);
 
         await Send.OkAsync(new DeleteResponse(success), cancellationToken);
     }

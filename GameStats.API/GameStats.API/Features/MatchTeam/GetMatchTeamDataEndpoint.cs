@@ -25,7 +25,7 @@ public sealed record GetMatchTeamDataRequest
     public int? Offset { get; set; }
 }
 
-public sealed record GetMatchTeamDataResponse(IEnumerable<MatchTeamResponse> Maps);
+public sealed record GetMatchTeamDataResponse(IEnumerable<MatchTeamResponse> MatchTeams);
 
 
 public class GetMatchTeamDataEndpoint(IMatchTeamStore matchTeamStore) : Endpoint<GetMatchTeamDataRequest, GetMatchTeamDataResponse>

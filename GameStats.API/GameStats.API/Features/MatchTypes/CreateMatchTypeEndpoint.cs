@@ -9,7 +9,6 @@ namespace GameStats.API.Features.MatchTypes;
 
 public sealed record CreateMatchTypeRequest
 {
-    public int MatchTypeId { get; set; }
     public required string MatchTypeName { get; set; }
     public int GameId { get; set; }
 }
