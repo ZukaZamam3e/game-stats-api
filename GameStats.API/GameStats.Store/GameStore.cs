@@ -8,9 +8,10 @@ namespace GameStats.Store;
 
 public class GameStore(GameStatsDbContext _context) : IGameStore
 {
-    public async Task<IEnumerable<GameModel>> GetGames(PagedQuery<GameModel> pagedQuery)
+    public async Task<DataModel<GameModel>> GetGames(PagedQuery<GameModel> pagedQuery)
     {
         IQueryable<GAME> query = _context.GAME.AsQueryable();
+        int count = query.Count();
 
         if (pagedQuery.Filter != null)
         {
@@ -33,7 +34,11 @@ public class GameStore(GameStatsDbContext _context) : IGameStore
             GameName = g.GAME_NAME
         }).ToListAsync();
 
-        return games;
+        return new DataModel<GameModel>
+        {
+            Data = games ?? [],
+            Count = count
+        };
     }
 
     public async Task<GameModel?> GetGame(int gameId)
