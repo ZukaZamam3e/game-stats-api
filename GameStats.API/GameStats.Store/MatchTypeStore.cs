@@ -9,9 +9,10 @@ namespace GameStats.Store;
 
 public class MatchTypeStore(GameStatsDbContext _context) : IMatchTypeStore
 {
-    public async Task<IEnumerable<MatchTypeModel>> GetMatchTypes(PagedQuery<MatchTypeModel> pagedQuery)
+    public async Task<DataModel<MatchTypeModel>> GetMatchTypes(PagedQuery<MatchTypeModel> pagedQuery)
     {
         IQueryable<MATCH_TYPE> query = _context.MATCH_TYPE.AsQueryable();
+        int count = query.Count();
 
         if (pagedQuery.Filter != null)
         {
@@ -33,14 +34,18 @@ public class MatchTypeStore(GameStatsDbContext _context) : IMatchTypeStore
 
         query = query.OrderBy(m => m.MATCH_TYPE_ID).ApplyPaging(pagedQuery);
 
-        List<MatchTypeModel> games = await query.Select(m => new MatchTypeModel
+        List<MatchTypeModel> matchTypes = await query.Select(m => new MatchTypeModel
         {
             MatchTypeId = m.MATCH_TYPE_ID,
             GameId = m.GAME_ID,
             MatchTypeName = m.MATCH_TYPE_NAME
         }).ToListAsync();
 
-        return games;
+        return new DataModel<MatchTypeModel>
+        {
+            Data = matchTypes ?? [],
+            Count = count
+        };
     }
 
     public async Task<MatchTypeModel?> GetMatchType(int matchTypeId)

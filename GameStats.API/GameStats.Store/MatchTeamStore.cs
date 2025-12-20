@@ -8,9 +8,10 @@ namespace GameStats.Store;
 
 public class MatchTeamStore(GameStatsDbContext _context) : IMatchTeamStore
 {
-    public async Task<IEnumerable<MatchTeamModel>> GetMatcheTeams(PagedQuery<MatchTeamModel> pagedQuery)
+    public async Task<DataModel<MatchTeamModel>> GetMatcheTeams(PagedQuery<MatchTeamModel> pagedQuery)
     {
         IQueryable<MATCH_TEAM> query = _context.MATCH_TEAM.AsQueryable();
+        int count = query.Count();
 
         if (pagedQuery.Filter != null)
         {
@@ -40,7 +41,11 @@ public class MatchTeamStore(GameStatsDbContext _context) : IMatchTeamStore
             TeamColor = mt.TEAM_COLOR
         }).ToListAsync();
 
-        return teams;
+        return new DataModel<MatchTeamModel>
+        {
+            Data = teams ?? [],
+            Count = count
+        };
     }
 
     public async Task<MatchTeamModel?> GetMatchTeam(int matchTeamId)

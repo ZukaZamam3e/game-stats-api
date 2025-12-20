@@ -1,4 +1,7 @@
-﻿using GameStats.API.Features.MatchTypes.Shared.Responses;
+﻿using GameStats.API.Features.MatchTeam.Shared;
+using GameStats.API.Features.MatchTeam.Shared.Responses;
+using GameStats.API.Features.MatchTypes.Shared.Responses;
+using GameStats.API.Features.Shared.Responses;
 using GameStats.Model;
 
 namespace GameStats.API.Features.MatchTypes.Shared;
@@ -7,7 +10,11 @@ public static class MatchTypeMappers
 {
     public static MatchTypeResponse MapToResponse(this MatchTypeModel map) => new(map.MatchTypeId, map.MatchTypeName, map.GameId);
 
-    public static IEnumerable<MatchTypeResponse> MapToResponse(this IEnumerable<MatchTypeModel> matchType) => matchType.Select(matchType => matchType.MapToResponse());
+    public static IEnumerable<MatchTypeResponse> MapToResponse(this IEnumerable<MatchTypeModel> matchType) 
+        => matchType.Select(matchType => matchType.MapToResponse());
+
+    public static DataResponse<MatchTypeResponse> MapToResponse(this DataModel<MatchTypeModel> data)
+        => new(data.Data.MapToResponse(), data.Count);
 
     public static PagedQuery<MatchTypeModel> MapToPagedQuery(this GetMatchTypeDataRequest request)
     {

@@ -8,9 +8,10 @@ namespace GameStats.Store;
 
 public class MatchStore(GameStatsDbContext _context) : IMatchStore
 {
-    public async Task<IEnumerable<MatchModel>> GetMatches(PagedQuery<MatchModel> pagedQuery)
+    public async Task<DataModel<MatchModel>> GetMatches(PagedQuery<MatchModel> pagedQuery)
     {
         IQueryable<MATCH> query = _context.MATCH.AsQueryable();
+        int count = query.Count();
 
         if (pagedQuery.Filter != null)
         {
@@ -59,7 +60,11 @@ public class MatchStore(GameStatsDbContext _context) : IMatchStore
             CreatedDate = m.CREATED_DATE
         }).ToListAsync();
 
-        return matches;
+        return new DataModel<MatchModel>
+        {
+            Data = matches ?? [],
+            Count = count
+        };
     }
 
     public async Task<MatchModel?> GetMatch(int matchId)

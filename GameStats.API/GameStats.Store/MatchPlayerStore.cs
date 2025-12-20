@@ -9,9 +9,10 @@ namespace GameStats.Store;
 
 public class MatchPlayerStore(GameStatsDbContext _context) : IMatchPlayerStore
 {
-    public async Task<IEnumerable<MatchPlayerModel>> GetMatchPlayers(PagedQuery<MatchPlayerModel> pagedQuery)
+    public async Task<DataModel<MatchPlayerModel>> GetMatchPlayers(PagedQuery<MatchPlayerModel> pagedQuery)
     {
         IQueryable<MATCH_PLAYER> query = _context.MATCH_PLAYER.AsQueryable();
+        int count = query.Count();
 
         if (pagedQuery.Filter != null)
         {
@@ -47,7 +48,11 @@ public class MatchPlayerStore(GameStatsDbContext _context) : IMatchPlayerStore
             Score = m.SCORE
         }).ToListAsync();
 
-        return matchPlayers;
+        return new DataModel<MatchPlayerModel>
+        {
+            Data = matchPlayers ?? [],
+            Count = count
+        };
     }
 
     public async Task<MatchPlayerModel?> GetMatchPlayer(int matchPlayerId)

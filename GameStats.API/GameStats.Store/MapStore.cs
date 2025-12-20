@@ -9,9 +9,10 @@ namespace GameStats.Store;
 
 public class MapStore(GameStatsDbContext _context) : IMapStore
 {
-    public async Task<IEnumerable<MapModel>> GetMaps(PagedQuery<MapModel> pagedQuery)
+    public async Task<DataModel<MapModel>> GetMaps(PagedQuery<MapModel> pagedQuery)
     {
         IQueryable<MAP> query = _context.MAP.AsQueryable();
+        int count = query.Count();
 
         if (pagedQuery.Filter != null)
         {
@@ -40,7 +41,11 @@ public class MapStore(GameStatsDbContext _context) : IMapStore
             MapName = g.MAP_NAME
         }).ToListAsync();
 
-        return maps;
+        return new DataModel<MapModel>
+        {
+            Data = maps ?? [],
+            Count = count
+        };
     }
 
     public async Task<MapModel?> GetMap(int mapId)

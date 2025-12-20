@@ -1,6 +1,7 @@
 ﻿using FastEndpoints;
 using GameStats.API.Features.Match.Shared;
 using GameStats.API.Features.Match.Shared.Responses;
+using GameStats.API.Features.Shared.Responses;
 using GameStats.Model;
 using GameStats.Store.Interfaces;
 
@@ -34,9 +35,7 @@ public sealed record GetMatchDataRequest
     public int? Offset { get; set; }
 };
 
-public sealed record GetMatchDataResponse(IEnumerable<MatchResponse> Matches);
-
-public class GetMatchDataEndpoint(IMatchStore matchStore) : Endpoint<GetMatchDataRequest, GetMatchDataResponse>
+public class GetMatchDataEndpoint(IMatchStore matchStore) : Endpoint<GetMatchDataRequest, DataResponse<MatchResponse>>
 {
     public override void Configure()
     {
@@ -50,6 +49,6 @@ public class GetMatchDataEndpoint(IMatchStore matchStore) : Endpoint<GetMatchDat
     {
         var pagedQuery = request.MapToPagedQuery();
         var matches = await matchStore.GetMatches(pagedQuery);
-        await Send.OkAsync(new GetMatchDataResponse(matches.MapToResponse()), cancellationToken);
+        await Send.OkAsync(matches.MapToResponse(), cancellationToken);
     }
 }

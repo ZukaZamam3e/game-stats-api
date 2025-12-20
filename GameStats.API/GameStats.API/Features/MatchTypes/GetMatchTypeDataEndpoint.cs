@@ -23,8 +23,6 @@ public sealed record GetMatchTypeDataRequest
     public int? Offset { get; set; }
 }
 
-public sealed record GetMatchTypeDataResponse(IEnumerable<MatchTypeResponse> MatchTypes);
-
 public class GetMatchTypeDataEndpoint(IMatchTypeStore matchTypeStore) : Endpoint<GetMatchTypeDataRequest>
 {
     public override void Configure()
@@ -34,8 +32,8 @@ public class GetMatchTypeDataEndpoint(IMatchTypeStore matchTypeStore) : Endpoint
     }
     public override async Task HandleAsync(GetMatchTypeDataRequest request, CancellationToken cancellationToken)
     {
-        var matchTypes = await matchTypeStore.GetMatchTypes(request.MapToPagedQuery()) ?? [];
+        var matchTypes = await matchTypeStore.GetMatchTypes(request.MapToPagedQuery());
 
-        await Send.OkAsync(new GetMatchTypeDataResponse(matchTypes.MapToResponse()), cancellationToken);
+        await Send.OkAsync(matchTypes.MapToResponse(), cancellationToken);
     }
 }
