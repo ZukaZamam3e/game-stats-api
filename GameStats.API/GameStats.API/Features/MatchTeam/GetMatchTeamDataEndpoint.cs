@@ -1,6 +1,7 @@
 ﻿using FastEndpoints;
 using GameStats.API.Features.MatchTeam.Shared;
 using GameStats.API.Features.MatchTeam.Shared.Responses;
+using GameStats.API.Features.Shared.Responses;
 using GameStats.Model;
 using GameStats.Store;
 using GameStats.Store.Interfaces;
@@ -25,10 +26,7 @@ public sealed record GetMatchTeamDataRequest
     public int? Offset { get; set; }
 }
 
-public sealed record GetMatchTeamDataResponse(IEnumerable<MatchTeamResponse> MatchTeams);
-
-
-public class GetMatchTeamDataEndpoint(IMatchTeamStore matchTeamStore) : Endpoint<GetMatchTeamDataRequest, GetMatchTeamDataResponse>
+public class GetMatchTeamDataEndpoint(IMatchTeamStore matchTeamStore) : Endpoint<GetMatchTeamDataRequest, DataResponse<MatchTeamResponse>>
 {
     public override void Configure()
     {
@@ -37,8 +35,8 @@ public class GetMatchTeamDataEndpoint(IMatchTeamStore matchTeamStore) : Endpoint
     }
     public override async Task HandleAsync(GetMatchTeamDataRequest request, CancellationToken cancellationToken)
     {
-        IEnumerable<MatchTeamModel> matchTeams = await matchTeamStore.GetMatcheTeams(request.MapToPagedQuery()) ?? [];
+        DataModel<MatchTeamModel> matchTeams = await matchTeamStore.GetMatcheTeams(request.MapToPagedQuery());
         
-        await Send.OkAsync(new GetMatchTeamDataResponse(matchTeams.MapToResponse()), cancellationToken);
+        await Send.OkAsync(matchTeams.MapToResponse(), cancellationToken);
     }
 }

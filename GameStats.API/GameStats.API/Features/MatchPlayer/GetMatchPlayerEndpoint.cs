@@ -13,7 +13,7 @@ public class GetMatchPlayerEndpoint(IMatchPlayerStore matchPlayerStore) : Endpoi
 {
     public override void Configure()
     {
-        Get("/api/matchplayer");
+        Get("/api/matchplayer/get");
         AllowAnonymous();
     }
     public override async Task HandleAsync(

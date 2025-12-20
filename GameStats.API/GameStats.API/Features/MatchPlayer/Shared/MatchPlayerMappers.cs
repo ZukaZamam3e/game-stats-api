@@ -1,4 +1,7 @@
-﻿using GameStats.API.Features.MatchPlayer.Shared.Responses;
+﻿using GameStats.API.Features.Map.Shared;
+using GameStats.API.Features.Map.Shared.Responses;
+using GameStats.API.Features.MatchPlayer.Shared.Responses;
+using GameStats.API.Features.Shared.Responses;
 using GameStats.Model;
 
 namespace GameStats.API.Features.MatchPlayer.Shared;
@@ -16,6 +19,9 @@ public static class MatchPlayerMappers
     
     public static IEnumerable<MatchPlayerResponse> MapToResponse(this IEnumerable<MatchPlayerModel> matchPlayers)
         => matchPlayers.Select(mp => mp.MapToResponse());
+
+    public static DataResponse<MatchPlayerResponse> MapToResponse(this DataModel<MatchPlayerModel> data) 
+        => new(data.Data.MapToResponse(), data.Count);
 
     public static PagedQuery<MatchPlayerModel> MapToPagedQuery(this GetMatchPlayerDataRequest request)
     {

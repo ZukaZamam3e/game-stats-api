@@ -4,7 +4,7 @@ namespace GameStats.Store.Interfaces;
 
 public interface IGameStore
 {
-    Task<IEnumerable<GameModel>> GetGames(PagedQuery<GameModel> pagedQuery);
+    Task<DataModel<GameModel>> GetGames(PagedQuery<GameModel> pagedQuery);
 
     Task<GameModel?> GetGame(int gameId);
 

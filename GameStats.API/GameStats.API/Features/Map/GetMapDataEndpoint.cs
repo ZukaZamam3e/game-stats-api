@@ -1,5 +1,7 @@
 using FastEndpoints;
 using GameStats.API.Features.Map.Shared;
+using GameStats.API.Features.Map.Shared.Responses;
+using GameStats.API.Features.Shared.Responses;
 using GameStats.Model;
 using GameStats.Store.Interfaces;
 
@@ -23,20 +25,18 @@ public sealed record GetMapDataRequest
     public int? Offset { get; set; }
 }
 
-public sealed record GetMapDataResponse(IEnumerable<MapModel> Maps);
-
-public class GetMapDataEndpoint(IMapStore mapStore) : Endpoint<GetMapDataRequest, GetMapDataResponse>
+public class GetMapDataEndpoint(IMapStore mapStore) : Endpoint<GetMapDataRequest, DataResponse<MapResponse>>
 {
     public override void Configure()
     {
-        Get("/api/map/getmapdata");
+        Get("/api/map/data");
         AllowAnonymous();
     }
 
     public override async Task HandleAsync(GetMapDataRequest request, CancellationToken cancellationToken)
     {
-        IEnumerable<MapModel> maps = await mapStore.GetMaps(request.MapToPagedQuery()) ?? [];
+        DataModel<MapModel> maps = await mapStore.GetMaps(request.MapToPagedQuery());
 
-        await Send.OkAsync(new GetMapDataResponse(maps), cancellationToken);
+        await Send.OkAsync(maps.MapToResponse(), cancellationToken);
     }
 }

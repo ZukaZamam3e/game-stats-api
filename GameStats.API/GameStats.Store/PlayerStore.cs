@@ -8,9 +8,10 @@ namespace GameStats.Store;
 
 public class PlayerStore(GameStatsDbContext _context) : IPlayerStore
 {
-    public async Task<IEnumerable<PlayerModel>> GetPlayers(PagedQuery<PlayerModel> pagedQuery)
+    public async Task<DataModel<PlayerModel>> GetPlayers(PagedQuery<PlayerModel> pagedQuery)
     {
         IQueryable<PLAYER> query = _context.PLAYER.AsQueryable();
+        int count = query.Count();
 
         if (pagedQuery.Filter != null)
         {
@@ -40,7 +41,11 @@ public class PlayerStore(GameStatsDbContext _context) : IPlayerStore
             Emblem = g.EMBLEM
         }).ToListAsync();
 
-        return players;
+        return new DataModel<PlayerModel>
+        {
+            Data = players ?? [],
+            Count = count
+        };
     }
 
     public async Task<PlayerModel?> GetPlayer(int playerId)

@@ -4,7 +4,7 @@ namespace GameStats.Store.Interfaces;
 
 public interface IMatchPlayerStore
 {
-    Task<IEnumerable<MatchPlayerModel>> GetMatchPlayers(PagedQuery<MatchPlayerModel> pagedQuery);
+    Task<DataModel<MatchPlayerModel>> GetMatchPlayers(PagedQuery<MatchPlayerModel> pagedQuery);
     Task<MatchPlayerModel?> GetMatchPlayer(int matchPlayerId);
     Task<MatchPlayerModel?> CreateMatchPlayer(MatchPlayerModel matchPlayer);
     Task<MatchPlayerModel?> UpdateMatchPlayer(MatchPlayerModel matchPlayer);
